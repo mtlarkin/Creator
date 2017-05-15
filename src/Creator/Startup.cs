@@ -50,11 +50,6 @@ namespace Creator
                     template: "{controller=Account}/{action=Index}/{id?}");
             });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
