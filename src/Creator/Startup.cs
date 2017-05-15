@@ -41,8 +41,8 @@ namespace Creator
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole();
-            app.UseIdentity();
             app.UseStaticFiles();
+            app.UseIdentity();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
