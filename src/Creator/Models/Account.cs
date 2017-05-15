@@ -7,5 +7,6 @@ namespace Creator.Models
 {
     public class Account
     {
+
     }
 }
