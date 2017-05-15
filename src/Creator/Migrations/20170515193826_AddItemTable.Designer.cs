@@ -8,9 +8,10 @@ using Creator.Models;
 namespace Creator.Migrations
 {
     [DbContext(typeof(CreatorDbContext))]
-    partial class CreatorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170515193826_AddItemTable")]
+    partial class AddItemTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")

@@ -1,0 +1,30 @@
+﻿@{ 
+    ViewData["Title"] = "Post Index";
+}
+
+@using System.Security.Claims
+@model IEnumerable<Creator.Models.Post>
+<h2>Here are your posts @User.Identity.Name</h2>
+<hr />
+@if (Model.Any())
+{
+    <div id="post-list">
+
+    @foreach ( var post in Model)
+    {
+      
+        <div class="post-tile">
+            <h2>@post.Title</h2>
+            <p>@post.Body</p>
+            <p>@post.Score</p>
+        </div>
+
+    }
+    </div>
+} 
+else 
+{
+    <p>You haven't posted anything!</p>
+}
+
+@Html.ActionLink("Create new", "Create")

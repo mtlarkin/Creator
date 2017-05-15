@@ -1,0 +1,18 @@
+﻿@{ 
+    ViewData["Title"] = "Create a new post";
+}
+
+@model Creator.Models.Post
+
+<h2>Add a new Post</h2>
+<hr />
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.Title)
+    @Html.TextBoxFor(m => m.Title)
+
+    @Html.LabelFor(m => m.Body)
+    @Html.EditorFor(m => m.Body)
+    <input type="submit" value="Create" />
+}
+@Html.ActionLink("Back to List", "Index")
