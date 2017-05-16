@@ -32,8 +32,9 @@ namespace Creator.Controllers
         /// <returns>'Index' view with a list of the current user's Posts</returns>
         public async Task<IActionResult> Index()
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
+
 
             return View(_db.Posts.Where(x => x.PostOwner.Id == currentUser.Id));
         }
@@ -49,18 +50,25 @@ namespace Creator.Controllers
 
 
         /// <summary>
-        /// Creates a new post with information submitted from the 'Create' view
+        /// POST: Post/Create - Creates a new post with information submitted from the 'Create' view
         /// </summary>
         /// <param name="post">Takes the information entered in the 'Create' view and inserts it into a temporary Post object that will be saved to the database</param>
         /// <returns>Redirect to 'Post/Index'</returns>
         [HttpPost]
         public async Task<IActionResult> Create(Post post)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          //Grab the id of the current user
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+          //Find the current User object in the database by searching for the user's id
             var currentUser = await _userManager.FindByIdAsync(userId);
+          //Assign the current user as the post's owner
             post.PostOwner = currentUser;
+
+          //Add the post to the database and save it
             _db.Posts.Add(post);
             _db.SaveChanges();
+
+
             return RedirectToAction("Index");
         }
 

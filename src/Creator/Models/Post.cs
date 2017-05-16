@@ -52,9 +52,6 @@ namespace Creator.Models
         /// The User that made the post
         /// </summary>
         public virtual ApplicationUser PostOwner { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public virtual Comment PostComment { get; set; }
+
     }
 }

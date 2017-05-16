@@ -16,8 +16,8 @@ namespace Creator.Models
         public int Score { get; set; }
         public int Bump { get; set; }
         public int Knock { get; set; }
-        public virtual Post PostCommentedOn { get; set; }
-        public virtual Comment ParentComment { get; set; }
+        public virtual Post PostRepliedTo { get; set; }
+        public virtual Comment ReplyTo { get; set; }
         public virtual ApplicationUser CommentOwner { get; set; }
 
     }

@@ -2,11 +2,13 @@
     ViewData["Title"] = "Post Index";
 }
 
-@using System.Security.Claims
 @model IEnumerable<Creator.Models.Post>
+@using System.Security.Claims
+
+
 <h2>Here are your posts @User.Identity.Name</h2>
 <hr />
-@if (Model.Any())
+@if(Model.Any())
 {
     <div id="post-list">
 

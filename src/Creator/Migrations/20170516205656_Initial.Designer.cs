@@ -8,8 +8,8 @@ using Creator.Models;
 namespace Creator.Migrations
 {
     [DbContext(typeof(CreatorDbContext))]
-    [Migration("20170515193826_AddItemTable")]
-    partial class AddItemTable
+    [Migration("20170516205656_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,7 +79,9 @@ namespace Creator.Migrations
 
                     b.Property<int>("Knock");
 
-                    b.Property<int?>("ParentCommentCommentId");
+                    b.Property<int?>("PostRepliedToPostId");
+
+                    b.Property<int?>("ReplyToCommentId");
 
                     b.Property<int>("Score");
 
@@ -87,7 +89,9 @@ namespace Creator.Migrations
 
                     b.HasIndex("CommentOwnerId");
 
-                    b.HasIndex("ParentCommentCommentId");
+                    b.HasIndex("PostRepliedToPostId");
+
+                    b.HasIndex("ReplyToCommentId");
 
                     b.ToTable("Comments");
                 });
@@ -97,6 +101,8 @@ namespace Creator.Migrations
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("Available");
+
                     b.Property<string>("Body");
 
                     b.Property<int>("Bumps");
@@ -104,8 +110,6 @@ namespace Creator.Migrations
                     b.Property<int>("Knocks");
 
                     b.Property<string>("Link");
-
-                    b.Property<int?>("PostCommentCommentId");
 
                     b.Property<string>("PostOwnerId");
 
@@ -118,8 +122,6 @@ namespace Creator.Migrations
                     b.Property<int>("Views");
 
                     b.HasKey("PostId");
-
-                    b.HasIndex("PostCommentCommentId");
 
                     b.HasIndex("PostOwnerId");
 
@@ -239,17 +241,17 @@ namespace Creator.Migrations
                         .WithMany()
                         .HasForeignKey("CommentOwnerId");
 
-                    b.HasOne("Creator.Models.Comment", "ParentComment")
+                    b.HasOne("Creator.Models.Post", "PostRepliedTo")
                         .WithMany()
-                        .HasForeignKey("ParentCommentCommentId");
+                        .HasForeignKey("PostRepliedToPostId");
+
+                    b.HasOne("Creator.Models.Comment", "ReplyTo")
+                        .WithMany()
+                        .HasForeignKey("ReplyToCommentId");
                 });
 
             modelBuilder.Entity("Creator.Models.Post", b =>
                 {
-                    b.HasOne("Creator.Models.Comment", "PostComment")
-                        .WithMany()
-                        .HasForeignKey("PostCommentCommentId");
-
                     b.HasOne("Creator.Models.ApplicationUser", "PostOwner")
                         .WithMany()
                         .HasForeignKey("PostOwnerId");
