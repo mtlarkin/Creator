@@ -13,12 +13,22 @@ namespace Creator.Models
         [Key]
         public int CommentId { get; set; }
         public string Body { get; set; }
-        public int Score { get; set; }
-        public int Bump { get; set; }
-        public int Knock { get; set; }
-        public virtual Post PostRepliedTo { get; set; }
-        public virtual Comment ReplyTo { get; set; }
+        /// <summary>
+        /// The user that created this comment
+        /// </summary>
         public virtual ApplicationUser CommentOwner { get; set; }
+        /// <summary>
+        /// The post this comment is replying to
+        /// </summary>
+        public virtual Post PostRepliedTo { get; set; }
+        /// <summary>
+        /// The ID of the comment that *this* comment is replying to
+        /// </summary>
+        public virtual Comment CommentRepliedToId { get; set; }
+        /// <summary>
+        /// Comments in reply to this comment
+        /// </summary>
+        public virtual ICollection<Comment> CommentReplies { get; set; }
 
     }
 }

@@ -1,0 +1,22 @@
+﻿
+
+@{
+    var post = ViewBag.Post;
+}
+@model Creator.Models.Comment
+
+
+    <h2>@post.Title</h2>
+    
+@using (Html.BeginForm("AddComment", "Post"))
+{
+    @Html.TextBoxFor(Comment => Comment.Body)
+    <input name="id" value="@post.PostId" type="hidden"/>
+    <input type="submit" value="Post comment" />
+}
+@foreach(var comment in post.Comments)
+{
+    <h2>@comment.Body</h2>
+
+}
+

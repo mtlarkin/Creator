@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Creator.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,16 +68,9 @@ namespace Creator.Migrations
                 {
                     PostId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Available = table.Column<bool>(nullable: false),
                     Body = table.Column<string>(nullable: true),
-                    Bumps = table.Column<int>(nullable: false),
-                    Knocks = table.Column<int>(nullable: false),
-                    Link = table.Column<string>(nullable: true),
                     PostOwnerId = table.Column<string>(nullable: true),
-                    Score = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    Views = table.Column<int>(nullable: false)
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -183,12 +176,9 @@ namespace Creator.Migrations
                     CommentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Body = table.Column<string>(nullable: true),
-                    Bump = table.Column<int>(nullable: false),
                     CommentOwnerId = table.Column<string>(nullable: true),
-                    Knock = table.Column<int>(nullable: false),
-                    PostRepliedToPostId = table.Column<int>(nullable: true),
-                    ReplyToCommentId = table.Column<int>(nullable: true),
-                    Score = table.Column<int>(nullable: false)
+                    CommentRepliedToIdCommentId = table.Column<int>(nullable: true),
+                    PostRepliedToPostId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,16 +190,16 @@ namespace Creator.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Comments_Comments_CommentRepliedToIdCommentId",
+                        column: x => x.CommentRepliedToIdCommentId,
+                        principalTable: "Comments",
+                        principalColumn: "CommentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Comments_Posts_PostRepliedToPostId",
                         column: x => x.PostRepliedToPostId,
                         principalTable: "Posts",
                         principalColumn: "PostId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Comments_Comments_ReplyToCommentId",
-                        column: x => x.ReplyToCommentId,
-                        principalTable: "Comments",
-                        principalColumn: "CommentId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -230,14 +220,14 @@ namespace Creator.Migrations
                 column: "CommentOwnerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_CommentRepliedToIdCommentId",
+                table: "Comments",
+                column: "CommentRepliedToIdCommentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comments_PostRepliedToPostId",
                 table: "Comments",
                 column: "PostRepliedToPostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_ReplyToCommentId",
-                table: "Comments",
-                column: "ReplyToCommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_PostOwnerId",

@@ -18,7 +18,7 @@
         <div class="post-tile">
             <h2>@post.Title</h2>
             <p>@post.Body</p>
-            <p>@post.Score</p>
+            @Html.ActionLink("View comments", "ViewPost", new { postId = post.PostId })
         </div>
 
     }

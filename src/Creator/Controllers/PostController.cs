@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Creator.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,6 +31,7 @@ namespace Creator.Controllers
         /// GET: Post/Index with current user's Posts
         /// </summary>
         /// <returns>'Index' view with a list of the current user's Posts</returns>
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -43,6 +45,7 @@ namespace Creator.Controllers
         /// GET: Post/Create
         /// </summary>
         /// <returns> 'Create' view</returns>
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -72,12 +75,26 @@ namespace Creator.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult ViewPost(int postId)
+        {
+            var post = _db.Posts.Include(p => p.Comments).FirstOrDefault(p => p.PostId == postId);
+            ViewBag.Post = post;
+
+            return View();
+        }
+
         [HttpPost]
-        public async Task<IActionResult> AddComment(Comment comment)
+        public async Task<IActionResult> AddComment(Comment comment, int id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var currentUser = await _userManager.FindByIdAsync(userId);
+            var post = _db.Posts.FirstOrDefault(p => p.PostId == id);
             comment.CommentOwner = currentUser;
+            comment.PostRepliedTo = post;
+
+            _db.Comments.Add(comment);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
     }
