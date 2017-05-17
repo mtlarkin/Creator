@@ -6,7 +6,7 @@
 @using System.Security.Claims
 
 
-<h2>Here are your posts @User.Identity.Name</h2>
+<h2>Here are your posts, @(User.Identity.Name).</h2>
 <hr />
 @if(Model.Any())
 {
@@ -17,7 +17,6 @@
       
         <div class="post-tile">
             <h2>@post.Title</h2>
-            <p>@post.Body</p>
             @Html.ActionLink("View comments", "ViewPost", new { postId = post.PostId })
         </div>
 

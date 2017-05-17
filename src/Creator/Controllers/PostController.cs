@@ -74,11 +74,16 @@ namespace Creator.Controllers
 
             return RedirectToAction("Index");
         }
-
+        /// <summary>
+        /// Get the details and comments of the clicked post
+        /// </summary>
+        /// <param name="postId">Extracted from the Post object's link</param>
+        /// <returns>View of a posts details</returns>
         [HttpGet]
         public IActionResult ViewPost(int postId)
         {
-            var post = _db.Posts.Include(p => p.Comments).FirstOrDefault(p => p.PostId == postId);
+            //Grab the selected post from the database and include the comments of that post.
+            var post = _db.Posts.Include(p => p.Comments).ThenInclude(r => r.CommentReplies).FirstOrDefault(p => p.PostId == postId);
             ViewBag.Post = post;
 
             return View();
@@ -95,6 +100,17 @@ namespace Creator.Controllers
 
             _db.Comments.Add(comment);
             _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> AddReply(Comment reply, int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var currentUser = await _userManager.FindByIdAsync(userId);
+            var comment = _db.Comments.FirstOrDefault(c => c.CommentId == id);
+            reply.CommentRepliedToId = comment;
+            reply.CommentOwner = currentUser;
+
             return RedirectToAction("Index");
         }
     }
